@@ -1,23 +1,7 @@
-// Get the elements
-const latitudeElement = document.getElementById("latitude");
-const longitudeElement = document.getElementById("longitude");
-const accuracyElement = document.getElementById("accuracy");
-const fileInput = document.getElementById("fileInput");
-const fileList = document.getElementById("fileList");
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-import {
-  getDatabase,
-  set,
-  ref,
-} from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
-import {
-  getStorage,
-  ref as storageRef,
-  uploadTask,
-} from "https://www.gstatic.com/firebasejs/10.13.1/firebase-storage.js";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-storage.js";
+import { getDatabase, ref as dbRef, push, set } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
-// Initialize Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyCui4rUSBEeRa0pYFzPBkvFd4amdfCAlM4",
   authDomain: "reactdemo-84e45.firebaseapp.com",
@@ -28,75 +12,65 @@ const firebaseConfig = {
   appId: "1:921002504696:web:886580d928bd8d9357a60d",
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Get a reference to the Realtime Database
-const db = getDatabase(app);
-
-// Get a reference to Firebase Storage
 const storage = getStorage(app);
+const database = getDatabase(app);
 
-// Function to get the current location
-function getLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude, accuracy } = position.coords;
-        latitudeElement.textContent = latitude;
-        longitudeElement.textContent = longitude;
-        accuracyElement.textContent = accuracy;
+let uploadedImageURL = '';
 
-        // Store location data in Firebase Realtime Database
-        db.ref("location").set({
-          latitude,
-          longitude,
-          accuracy,
-        });
-      },
-      (error) => {
-        console.error("Error getting location:", error);
-      }
-    );
+async function uploadImage() {
+  const fileInput = document.getElementById("fileInput");
+  const file = fileInput.files[0];
+
+  if (file) {
+    try {
+      const imageRef = storageRef(storage, `uploaded_images/${file.name}`);
+      await uploadBytes(imageRef, file);
+      uploadedImageURL = await getDownloadURL(imageRef);
+      const imagePreview = document.getElementById("imagePreview");
+      imagePreview.src = uploadedImageURL;
+      console.log("Image uploaded successfully:", uploadedImageURL);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
   } else {
-    console.error("Geolocation is not supported by this browser.");
+    console.error("No file selected");
   }
 }
 
-// Function to handle file input
-function handleFileInput() {
-  const files = fileInput.files;
-  const fileListHTML = [];
+const uploadButton = document.getElementById("uploadImage");
+uploadButton.addEventListener("click", uploadImage);
 
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    fileListHTML.push(`<li>${file.name} - ${file.size} bytes</li>`);
+document.getElementById("litterForm").addEventListener("submit", function(event) {
+  event.preventDefault();
 
-    // Upload file to Firebase Storage
-    const uploadTask = storage.ref(`files/${file.name}`).put(file);
+  const pincodeValue = document.getElementById("pincode").value;
+  const descriptionValue = document.getElementById("description").value;
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        // Handle upload progress
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(`Upload is ${progress}% done`);
-      },
-      (error) => {
-        console.error("Error uploading file:", error);
-      },
-      () => {
-        // Handle successful upload
-        console.log("File uploaded successfully!");
-      }
-    );
+  if (!pincodeValue || !descriptionValue || !uploadedImageURL) {
+    console.error("Please fill all fields and upload an image");
+    return;
   }
 
-  fileList.innerHTML = fileListHTML.join("");
-}
+  const blackspotRef = dbRef(database, 'litters');
+  const newBlackspotRef = push(blackspotRef);
 
-// Add event listener to file input
-fileInput.addEventListener("change", handleFileInput);
-
-// Get the current location on page load
-getLocation();
+  set(newBlackspotRef, {
+    pincode: pincodeValue,
+    description: descriptionValue,
+    imageURL: uploadedImageURL,
+    timestamp: Date.now()
+  })
+  .then(() => {
+    console.log("Data saved successfully!");
+    alert("Submission successful!");
+    document.getElementById("litterForm").reset();
+    document.getElementById("imagePreview").src = "";
+    uploadedImageURL = '';
+  })
+  .catch((error) => {
+    console.error("Error saving data:", error);
+    alert("Error submitting data. Please try again.");
+  });
+});

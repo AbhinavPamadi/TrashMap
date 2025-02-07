@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dumpsites</title>
-    <link rel="stylesheet" href="./css/dump.css" />
+    <title>Nearby Dustbins</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <link rel="stylesheet" type="text/css" href="css/viewbin.css" />
   </head>
   <body>
     <nav>
@@ -25,10 +26,21 @@
       </div>
       <a href="./login.html" class="download-btn">Logout</a>
     </nav>
+    <!-- Create a search bar input field -->
+    <input id="search-input" type="text" placeholder="Search for a location" />
+
+    <!-- Create a button to trigger the search -->
+    <button id="search-btn">Search</button>
+
+    <!-- The map container -->
+    <div id="root">
+      <div id="map" style="width: 100%; height: 100vh"></div>
+    </div>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSJi4beLUlh5IDO7jySN7sMkqFf2RSp9Y&callback=initMap"
+      async
+      defer
+    ></script>
+    <script src="viewbin.js"></script>
   </body>
-  <div class="map-container">
-    <iframe
-      src="https://www.google.com/maps/d/embed?mid=1ANTIXYWjPK8bqLlB7hGopl8Q2f94pCY&ehbc=2E312F"
-    ></iframe>
-  </div>
 </html>

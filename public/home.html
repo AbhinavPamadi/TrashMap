@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HomePage</title>
-    <script type="module" src="./index.js"></script>
+    
 </head>
 <body>
     
@@ -36,35 +36,185 @@
     <link rel="stylesheet" href="./css/home.css" />
   </head>
   <body>
+    <script type="module" src="./index.js"></script>
     <!-- Navigation Bar -->
-    <nav>
+    <nav id="navbar">
       <div class="nav-links">
         <a href="./home.html">Home</a>
-        <a href="#">About</a>
+        <a href="./aboutus.html">About</a>
         <a href="./dump.html">Dumpsites</a>
         <a href="./pickup.html">Pickup</a>
         <a href="./litter.html">BlackSpot</a>
         <div class="dropdown">
-          <a href="./home.html">Bins</a>
+          <a>Bins</a>
           <div class="dropdown-content">
             <a href="./add_Bin.html">Add a Bin</a>
-            <a href="#">View Bins</a>
+            <a href="./viewbin.html">View Bins</a>
           </div>
         </div>
-
         <a href="./contactus.html">Contact</a>
       </div>
-      <a href="./login.html" class="download-btn">Login/Register</a>
+      <a href="./login.html" class="download-btn" id="logout">Logout</a>
     </nav>
 
     <!-- Header Section -->
-    <header>
-      <h1>Making Cities Sustainable and Rewarding</h1>
-      <h2>It's not just an app. It's a movement to better our cities.</h2>
-      <a href="#" class="download-app-btn">Download Our App</a>
-      <div class="illustration">
-        <img src="../home.webp" alt="Illustration of a person recycling" />
+    <body>
+      <div class="header">
+       <div class="header-text">
+        <h1>
+         Making Cities Sustainable and Rewarding
+        </h1>
+        <p>
+         It's not just an app. It's a movement to better our cities.
+        </p>
+        <button>
+         Download Our App
+        </button>
+       </div>
+       <img alt="Person recycling a plastic bottle into a recycling bin" height="400" src="./images/home.webp" width="700"/>
       </div>
-    </header>
+      <div class="container">
+        <div class="content">
+          <h3>About-us</h3>
+         <h1>
+          Help us clean up our communities, And earn rewards for your efforts.
+         </h1>
+         <p>
+          At [Website Name], we are dedicated to transforming the way
+          communities handle waste and sanitation. Our mission is to create a
+          cleaner, healthier environment by promoting effective waste
+          segregation, responsible disposal, and innovative sanitation
+          solutions. We believe that sustainable waste management is the
+          cornerstone of public health and environmental preservation. Through
+          our website, we empower individuals and organizations to adopt
+          practices that reduce waste, recycle more efficiently, and contribute
+          to a cleaner, greener future. Together, we can build a world where
+          sanitation is a priority, and waste is managed with the respect our
+          planet deserves.
+         </p>
+         <a class="btn" href="#">
+          Read More
+         </a>
+        </div>
+        <div class="images">
+         <img alt="Person throwing waste into a bin" height="200" src="./images/about1.jpg" width="500"/>
+         <img alt="People cleaning up a park" height="200" src="./images/about2.jpg" width="300"/>
+        </div>
+       </div>
+       <div class="container2">
+        <div class="card">
+         <img alt="Green residential waste bin" height="200" src="./images/image.jpeg" width="100"/>
+         <h3>
+          Segregation of Waste
+         </h3>
+         <p>
+          Segregating waste helps recover materials like plastic, glass, and paper for reuse.
+         </p>
+         <p>Proper segregation keeps hazardous waste from contaminating the environment.</p>
+         <p>It makes waste processing easier and reduces disposal costs.</p>
+         <a class="btn" href="./segregation.html">
+          Read More
+         </a>
+        </div>
+        <div class="card">
+         <img alt="Green commercial waste dumpster" height="100" src="./images/h.png" width="100"/>
+         <h3>
+          Hazardous Waste
+         </h3>
+         <p>
+          Dispose of hazardous waste at designated facilities, recycling centers for e-waste.
+         </p>
+         <p>Improper disposal contaminates soil, water, and air, leading to pollution and ecological damage.</p>
+         <p>Exposure to improperly disposed hazardous waste can cause serious health issues and poison wildlife.</p>
+         <a class="btn" href="./hazardous.html">
+          Read More
+         </a>
+        </div>
+        <div class="card">
+         <img alt="Green roll-off dumpster" height="100" src="./images/ind.png" width="100"/>
+         <h3>
+          Effective Waste Management in India
+         </h3>
+         <p>
+          Waste generation will reach 165 million tonnes by 2030.
+         </p>
+         <p>Inadequate infrastructure, poor recycling, and e-waste growth.</p>
+         <p> Invest in technology, improve recycling, and raise public awareness.</p>
+         <a class="btn" href="./stats.html">
+          Read More
+         </a>
+        </div>
+       </div>
+
+    <div class="container3">
+      <div class="contact-box">
+        <div class="contact-info">
+          <h2>Contact with the team</h2>
+          <p>Feel free to contact us for any queries.</p>
+          <p>
+            <i class="fas fa-map-marker-alt"></i>
+            <strong>Location :</strong> Bangalore, Karnataka
+          </p>
+          <p>
+            <i class="fas fa-phone"></i> <strong>Phone no :</strong> (+91)
+            9999999999
+          </p>
+          <p>
+            <i class="fas fa-envelope"></i>
+            <strong>Email :</strong> sunny@gmail.com
+          </p>
+        </div>
+        <form id="contactusForm" class="contact-form">
+          <div class="alert">Thank you for the feedback!</div>
+          <input id="name" type="text" placeholder="Your Name" />
+          <input id="email" type="email" placeholder="Your email" />
+          <input id="phone" type="text" placeholder="Phone" />
+          <input id="subject" type="text" placeholder="Subject" />
+          <textarea id="msg" placeholder="message"></textarea>
+          <button id="contact" type="submit">Send Message</button>
+        </form>
+      </div>
+    </div>
+    <footer>
+      <div class="footerup">
+        <div class="logoleft">
+          <span>Making Cities Sustainable and Rewarding.
+         It's a movement to better our cities.
+          </span>
+        </div>
+        <div class="finfo">
+          <h3>Reach us</h3>
+          <div class="reach-us">
+            <p><img src="images\email.png" alt="email">
+              Email:sunnyproject@gmail.com</p>
+            <p><img src="images\smartphone.png" alt="phone">
+              Phone:+91 9999999999</p>
+            <p><img src="images\pin.png" alt="location">
+              Location:Bangalore</p>
+          </div>
+        </div>
+        <div class="quicklinks">
+          <ul>
+            <li>
+              <h3>Quicklinks</h3>
+            </li>
+        <li><a href="./aboutus.html">About</a></li>
+        <li><a href="./dump.html">Dumpsites</a></li>
+        <li><a href="./litter.html">BlackSpot</a></li>
+        <li><a href="./viewbin.html">Bins</a></li>
+                </ul>
+        </div>
+      </div>
+      <div class="footerdown">
+        <div class="copyrights">
+          <p>
+            <script type="text/javascript">
+              document.write(new Date().getFullYear());
+            </script>&copy RecyClean.
+          All Rights Reserved.  
+          </p>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>

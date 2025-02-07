@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hazardous Waste Disposal</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        color: #333;
+      }
+
+      nav {
+        background-color: #333;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #333;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        padding: 8px;
+        z-index: 1;
+      }
+
+      .dropdown-content a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+      }
+
+      .dropdown-content a:hover {
+        background-color: rgb(68, 64, 64);
+      }
+
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: white;
+        padding: 10px 15px;
+        transition: background-color 0.3s ease;
+      }
+
+      nav .download-btn {
+        background-color: #ff6600;
+        padding: 10px 20px;
+        border-radius: 5px;
+      }
+
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        width: 80%;
+        margin: 20px auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        color: #2c3e50;
+        margin-top: 0;
+        line-height: 1.8;
+      }
+
+      h2 {
+        color: #16a085;
+        margin-top: 20px;
+        line-height: 1.8;
+      }
+
+      ul {
+        list-style-type: disc;
+        margin-left: 20px;
+        line-height: 1.8;
+        font-size: 17px;
+        padding: 10px;
+      }
+
+      .section {
+        margin-bottom: 20px;
+      }
+
+      .highlight {
+        /* background-color: #f0f0f0; */
+        padding: 10px;
+        border-radius: 8px;
+        line-height: 1.8;
+        font-size: 17px;
+      }
+
+      .highlight ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        line-height: 1.8;
+        font-size: 17px;
+      }
+
+      .highlight li {
+        padding: 10px;
+        /* border-bottom: 1px solid #ccc; */
+        line-height: 1.8;
+        font-size: 17px;
+      }
+
+      .highlight li:last-child {
+        border-bottom: none;
+        line-height: 1.8;
+        font-size: 17px;
+      }
+
+      .highlight strong {
+        font-weight: bold;
+        color: #2c3e50;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-links">
+        <a href="./home.html">Home</a>
+        <a href="./aboutus.html">About</a>
+        <a href="./dump.html">Dumpsites</a>
+        <a href="./pickup.html">Pickup</a>
+        <a href="./litter.html">BlackSpot</a>
+        <div class="dropdown">
+          <a>Bins</a>
+          <div class="dropdown-content">
+            <a href="./add_Bin.html">Add a Bin</a>
+            <a href="./viewbin.html">View Bins</a>
+          </div>
+        </div>
+        <a href="./contactus.html">Contact</a>
+      </div>
+      <a href="./login.html" class="download-btn" id="logout">Logout</a>
+    </nav>
+
+    <div class="container">
+      <h1>Hazardous Waste Disposal</h1>
+
+      <div class="section">
+        <h2>How and Where to Dispose of Hazardous Waste</h2>
+        <ul>
+          <li>
+            <strong>Designated Facilities</strong>: Hazardous waste (chemicals,
+            paints) should be taken to specialized disposal centers for safe
+            treatment and disposal.
+          </li>
+          <li>
+            <strong>Recycling Centers for E-Waste</strong>: Old electronics and
+            batteries should be taken to certified e-waste recycling centers.
+          </li>
+          <li>
+            <strong>Pharmacies for Medical Waste</strong>: Return expired
+            medications and medical waste (syringes) to pharmacies or
+            specialized disposal programs.
+          </li>
+          <li>
+            <strong>Local Guidelines</strong>: Follow municipal rules for
+            household hazardous waste disposal or curbside programs.
+          </li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>Consequences of Improper Disposal</h2>
+        <div class="highlight">
+          <ul>
+            <li>
+              <strong>Soil and Water Contamination</strong>: Hazardous chemicals
+              can pollute soil and water, affecting crops and drinking water.
+            </li>
+            <li>
+              <strong>Air Pollution</strong>: Burning hazardous waste improperly
+              releases toxic fumes, contributing to pollution.
+            </li>
+            <li>
+              <strong>Human Health Risks</strong>: Direct contact can cause
+              chemical burns, respiratory problems, and long-term diseases.
+            </li>
+            <li>
+              <strong>Wildlife Harm</strong>: Toxins poison wildlife and disrupt
+              ecosystems.
+            </li>
+            <li>
+              <strong>Legal Penalties</strong>: Improper disposal may result in
+              fines or legal action for violators.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
