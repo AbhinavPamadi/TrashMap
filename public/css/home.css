@@ -40,7 +40,7 @@ body {
   /* padding: 10px; */
   max-width: 100%;
   border-radius: 10px;
-  margin-top: 70px;
+  margin-top: 100px;
 }
 
 /* Navigation Bar */
@@ -51,7 +51,7 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 60px;
+  height: 65px;
   position: fixed; /* Make it stick/fixed */
   top: -20px; /* Hide the navbar 50 px outside of the top view */
   width: 98%;
@@ -93,7 +93,7 @@ nav a {
   color: white;
   padding: 10px 15px;
   transition: background-color 0.3s ease;
-  font-size: 17.5px;
+  font-size: 18px;
 }
 
 nav .download-btn {
@@ -135,7 +135,7 @@ nav .download-btn {
     width: 80%;
     max-width: 400px;
     margin: 20px auto;
-    border-radius: 10px;
+    border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
@@ -164,7 +164,7 @@ nav .download-btn {
 }
 
 h3 {
-  color: #3ca03f;
+  color: #4caf50;
 }
 
 .content p {

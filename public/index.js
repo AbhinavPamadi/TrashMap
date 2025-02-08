@@ -3,21 +3,16 @@ import {
   getAuth,
   onAuthStateChanged,
   signOut,
+  createUserWithEmailAndPassword,
 } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
 import {
   getDatabase,
   ref,
   set,
   get,
-  child,
 } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
-import {
-  query,
-  orderByChild,
-  equalTo,
-} from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
-
+// Firebase Configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCui4rUSBEeRa0pYFzPBkvFd4amdfCAlM4",
   authDomain: "reactdemo-84e45.firebaseapp.com",
@@ -29,23 +24,23 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
 const db = getDatabase(app);
 
+// Check Authentication State
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    localStorage.setItem("loggedInUserId", user.uid); // Store userId
+    localStorage.setItem("loggedInUserId", user.uid);
     console.log("User ID:", user.uid);
-    fetchUserDetails(user.uid); // Fetch user details using UID
+    fetchUserDetails(user.uid);
   } else {
     console.log("User is not logged in");
-    window.location.href = "login.html"; // Redirect to login if not logged in
+    window.location.href = "login.html";
   }
 });
 
+// Logout Function
 const logoutButton = document.getElementById("logout");
-
 logoutButton.addEventListener("click", () => {
   localStorage.removeItem("loggedInUserId");
   signOut(auth)
@@ -56,6 +51,76 @@ logoutButton.addEventListener("click", () => {
       console.error("Error Signing out:", error);
     });
 });
+
+// Function to Fetch User Details from Firebase
+function fetchUserDetails(userId) {
+  const userRef = ref(db, "users/" + userId);
+
+  get(userRef)
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+        console.log("User Found:", userData);
+
+        // Get elements safely
+        const nameElement = document.getElementById("fName");
+        const emailElement = document.getElementById("rEmail");
+        const pointsElement = document.getElementById("user-points");
+
+        // Update UI only if elements exist
+        if (nameElement) nameElement.textContent = userData.name || "Unknown";
+        if (emailElement)
+          emailElement.textContent = userData.email || "No Email";
+        if (pointsElement) pointsElement.textContent = userData.points || 0;
+      } else {
+        console.log("No user found with the given ID.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+}
+
+// Function to Store User Data in Firebase
+function saveUserData(userId, name, email) {
+  set(ref(db, "users/" + userId), {
+    name: name,
+    email: email,
+    points: 0, // Default points set to 0
+  })
+    .then(() => {
+      console.log("User data saved successfully.");
+    })
+    .catch((error) => {
+      console.error("Error saving user data:", error);
+    });
+}
+
+// User Signup (Modify Signup Form to Include Name)
+const signupForm = document.getElementById("signup-form");
+
+if (signupForm) {
+  signupForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("signup-name").value;
+    const email = document.getElementById("signup-email").value;
+    const password = document.getElementById("signup-password").value;
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        saveUserData(user.uid, name, email);
+        console.log("User signed up:", user);
+        window.location.href = "dashboard.html";
+      })
+      .catch((error) => {
+        console.error("Signup error:", error.message);
+      });
+  });
+}
+
+// Contact Form Submission
 document.getElementById("contact").addEventListener("click", submitForm);
 
 function submitForm(e) {
@@ -69,10 +134,10 @@ function submitForm(e) {
 
   saveMessages(name, email, phone, subject, msg);
 
-  //   enable alert
+  // Enable alert
   document.querySelector(".alert").style.display = "block";
 
-  //   remove the alert and rest the form
+  // Remove alert & reset form
   setTimeout(() => {
     document.querySelector(".alert").style.display = "none";
     document.getElementById("contactusForm").reset();
@@ -82,10 +147,10 @@ function submitForm(e) {
 const getElementVal = (id) => {
   return document.getElementById(id).value;
 };
-//---ignore start
+
+// Function to Save Contact Form Data to Firebase
 const saveMessages = (name, email, phone, subject, msg) => {
-  const contactusDB = getDatabase(app);
-  set(ref(contactusDB, "Contact/" + name), {
+  set(ref(db, "Contact/" + name), {
     name: name,
     email: email,
     phone: phone,
@@ -94,6 +159,7 @@ const saveMessages = (name, email, phone, subject, msg) => {
   });
 };
 
+// Scroll Effect for Navbar
 window.onscroll = function () {
   scrollFunction();
 };
@@ -104,26 +170,4 @@ function scrollFunction() {
   } else {
     document.getElementById("navbar").style.top = "-10px";
   }
-}
-//---ignore ends
-
-function fetchUserDetails(userId) {
-  const userRef = ref(db, "users/" + userId); // Directly fetch user by userId
-
-  get(userRef)
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        const userData = snapshot.val();
-        console.log("User Found:", userData);
-
-        // Update the points in the UI
-        const userPoints = userData.points || 0; // Default to 0 if not present
-        document.getElementById("user-points").textContent = userPoints;
-      } else {
-        console.log("No user found with the given ID.");
-      }
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-    });
 }

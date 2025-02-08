@@ -9,46 +9,45 @@
         background-color: #c9d6ff;
         background: linear-gradient(to right, #e2e2e2, #c9d6ff);
       }
-      /* Add these styles to your home.css */
-      /* Add some basic styling to the search bar and button */
+
       #searchInput {
-        width: 250px; /* Slightly wider */
-        height: 40px; /* Slightly taller */
+        width: 250px;
+        height: 40px;
         padding: 10px;
         font-size: 16px;
         border: 1px solid #ccc;
-        border-radius: 5px; /* Rounded corners */
-        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Inner shadow */
-        transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+        border-radius: 5px;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
       }
 
       #searchInput:focus {
-        border-color: #4caf50; /* Green border on focus */
-        box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Green glow on focus */
-        outline: none; /* Remove default outline */
+        border-color: #4caf50;
+        box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        outline: none;
       }
 
       #searchBtn {
-        height: 40px; /* Match input height */
-        padding: 0 20px; /* Horizontal padding */
+        height: 40px;
+        padding: 0 20px;
         font-size: 16px;
         border: none;
         border-radius: 5px;
         background-color: #4caf50;
         color: #fff;
         cursor: pointer;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-        transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, transform 0.3s ease;
       }
 
       #searchBtn:hover {
         background-color: #3e8e41;
-        transform: translateY(-2px); /* Slight lift on hover */
+        transform: translateY(-2px);
       }
 
       #searchBtn:active {
-        background-color: #2e7031; /* Darker green on click */
-        transform: translateY(0); /* Reset lift on click */
+        background-color: #2e7031;
+        transform: translateY(0);
       }
       #navbar {
         display: flex;
@@ -142,8 +141,9 @@
 
       .googlemap {
         margin: 0 auto;
-        height: 1000px;
-        width: 1000px;
+        height: 700px;
+        width: 1100px;
+        border-radius: 5px;
       }
       .main_content {
         display: inline-block;
@@ -211,6 +211,7 @@
         background: #e32424;
       }
     </style>
+    <script type="module" src="./index.js"></script>
   </head>
   <body>
     <nav id="navbar">
@@ -226,6 +227,7 @@
             <a href="./addbin2.html">Add and View Bins</a>
           </div>
         </div>
+        <a href="./leaderboard.html">Leaderboard</a>
       </div>
       <div class="nav-extras">
         <div class="points-display">
@@ -359,22 +361,30 @@
             selectedmarker.placeInfo.name = CommonUtil.getInputValue("name");
             selectedmarker.placeInfo.description =
               CommonUtil.getInputValue("description");
-            selectedmarker.placeInfo.photo = CommonUtil.getInputValue("photo");
-            selectedmarker.placeInfo.addedBy = Math.random()
-              .toString(36)
-              .substr(2, 5);
 
-            GoogleMap.showPlaceDetailsToUser(selectedmarker);
+            // Handle image upload
+            var fileInput = document.getElementById("photo");
+            var file = fileInput.files[0];
+            if (file) {
+              var reader = new FileReader();
+              reader.onload = function (e) {
+                selectedmarker.placeInfo.photo = e.target.result; // Store Base64 image
+                GoogleMap.showPlaceDetailsToUser(selectedmarker);
 
-            // Save locations to localStorage
-            var locations = markers.map(function (marker) {
-              return {
-                lat: marker.getPosition().lat(),
-                lng: marker.getPosition().lng(),
-                info: marker.placeInfo,
+                // Save locations to localStorage
+                var locations = markers.map(function (marker) {
+                  return {
+                    lat: marker.getPosition().lat(),
+                    lng: marker.getPosition().lng(),
+                    info: marker.placeInfo,
+                  };
+                });
+                localStorage.setItem("locations", JSON.stringify(locations));
               };
-            });
-            localStorage.setItem("locations", JSON.stringify(locations));
+              reader.readAsDataURL(file);
+            } else {
+              GoogleMap.showPlaceDetailsToUser(selectedmarker);
+            }
           },
 
           removeLocation: function () {
@@ -407,6 +417,10 @@
           },
 
           showPlaceDetailsToUser: function (marker, isedit) {
+            var imageUrl = marker.placeInfo?.photo
+              ? marker.placeInfo.photo
+              : "dummy.jpg";
+
             var content =
               marker.placeInfo && !isedit
                 ? detailscontent
@@ -415,8 +429,10 @@
                       "PLACE_DESCRIPTION",
                       marker.placeInfo.description || "NO_DESCRIPTION"
                     )
-                    .replace("ADDED_BY", marker.placeInfo.addedBy)
+                    .replace("ADDED_BY", marker.placeInfo.addedBy || "Unknown")
+                    .replace("dummy.jpg", imageUrl) // Dynamically set image
                 : formcontent;
+
             GoogleMap.showInfoWindow(content, marker);
           },
 
@@ -434,12 +450,10 @@
       searchLocation = () => {
         let location = searchInput.value.trim();
         if (location) {
-          // Use the Google Maps Geocoder API to get the coordinates of the location
           let geocoder = new google.maps.Geocoder();
           geocoder.geocode({ address: location }, (results, status) => {
             if (status === "OK") {
               let latLng = results[0].geometry.location;
-              // Pan the map to the new location and set zoom
               GoogleMap.panToLocation(latLng);
             } else {
               alert("Unable to find location");
@@ -453,10 +467,8 @@
         const { latitude, longitude } = position.coords;
         const mapElement = document.getElementById("googlemap");
 
-        // Initialize the Google Map using the user's current location
         GoogleMap.initialize({ lat: latitude, lng: longitude });
 
-        // Attach the search button event listener
         searchBtn.addEventListener("click", searchLocation);
       });
     </script>

@@ -1,26 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pincode Frequency Table</title>
-    <link rel="stylesheet" href="./css/blackspots.css">
-</head>
-<body>
+    <link rel="stylesheet" href="./css/blackspots.css" />
+    <script type="module" src="./blackspots.js"></script>
+  </head>
+  <body>
+    <nav id="navbar">
+      <div class="nav-links">
+        <a href="./home.html">Home</a>
+        <a href="./aboutus.html">About</a>
+        <a href="./dump.html">Dumpsites</a>
+        <a href="https://trash--talk.blogspot.com/">Blog</a>
+        <a href="./litter.html">BlackSpot</a>
+        <div class="dropdown">
+          <a>Bins</a>
+          <div class="dropdown-content">
+            <a href="./addbin2.html">Add and View Bins</a>
+          </div>
+        </div>
+        <a href="./leaderboard.html">Leaderboard</a>
+      </div>
+      <div class="nav-extras">
+        <a href="./login.html" class="download-btn" id="logout">Logout</a>
+      </div>
+    </nav>
+
     <h1>Pincode Frequency Table</h1>
-    <input type="text" id="pincode" placeholder="Enter pincode">
+    <input type="text" id="pincode" placeholder="Enter pincode" />
     <button id="searchPincode">Search</button>
     <table id="frequencyTable">
-        <thead>
-            <tr>
-                <th>Pincode</th>
-                <th>Frequency</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Data will be populated here -->
-        </tbody>
+      <thead>
+        <tr>
+          <th>Pincode</th>
+          <th>Frequency</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data will be populated here -->
+      </tbody>
     </table>
-    <script type="module" src="./blackspots.js"></script>
-</body>
+  </body>
 </html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="./css/leaderboard.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leaderboard</title>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+        query,
+        orderByChild,
+      } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCui4rUSBEeRa0pYFzPBkvFd4amdfCAlM4",
+        authDomain: "reactdemo-84e45.firebaseapp.com",
+        projectId: "reactdemo-84e45",
+        storageBucket: "reactdemo-84e45.appspot.com",
+        messagingSenderId: "921002504696",
+        appId: "1:921002504696:web:886580d928bd8d9357a60d",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+
+      function fetchLeaderboard() {
+        const usersRef = ref(db, "users");
+        const leaderboardQuery = query(usersRef, orderByChild("points"));
+
+        get(leaderboardQuery)
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              const users = snapshot.val();
+              const leaderboard = [];
+
+              Object.keys(users).forEach((userId) => {
+                leaderboard.push({
+                  email: users[userId].email || "Unknown",
+                  points: users[userId].points || 0,
+                });
+              });
+
+              leaderboard.sort((a, b) => b.points - a.points); // Sort by points descending
+              displayLeaderboard(leaderboard);
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching leaderboard:", error);
+          });
+      }
+
+      function displayLeaderboard(leaderboard) {
+        const leaderboardTable = document.getElementById("leaderboard-body");
+        leaderboardTable.innerHTML = "";
+        leaderboard.forEach((user, index) => {
+          const row = `<tr>
+                    <td>${index + 1}</td>
+                    <td>${user.email}</td>
+                    <td>${user.points}</td>
+                </tr>`;
+          leaderboardTable.innerHTML += row;
+        });
+      }
+
+      window.onload = fetchLeaderboard;
+    </script>
+    <script type="module" src="./index.js"></script>
+  </head>
+  <body>
+    <nav id="navbar">
+      <div class="nav-links">
+        <a href="./home.html">Home</a>
+        <a href="./aboutus.html">About</a>
+        <a href="./dump.html">Dumpsites</a>
+        <a href="https://trash--talk.blogspot.com/">Blog</a>
+        <a href="./litter.html">BlackSpot</a>
+        <div class="dropdown">
+          <a>Bins</a>
+          <div class="dropdown-content">
+            <a href="./addbin2.html">Add and View Bins</a>
+          </div>
+        </div>
+        <a href="./leaderboard.html">Leaderboard</a>
+      </div>
+      <div class="nav-extras">
+        <div class="points-display">
+          Points: <span id="user-points">0</span>
+        </div>
+        <a href="./login.html" class="download-btn" id="logout">Logout</a>
+      </div>
+    </nav>
+    <h1 style="text-align: center">Leaderboard</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Email</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboard-body">
+        <!-- Leaderboard data will be inserted here -->
+      </tbody>
+    </table>
+  </body>
+</html>
