@@ -12,8 +12,11 @@ import {
   child,
 } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
-
-import { query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+import {
+  query,
+  orderByChild,
+  equalTo,
+} from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCui4rUSBEeRa0pYFzPBkvFd4amdfCAlM4",
@@ -31,16 +34,13 @@ const auth = getAuth(app);
 const db = getDatabase(app);
 
 onAuthStateChanged(auth, (user) => {
-  const loggedInUserId = localStorage.getItem("loggedInUserId");
-  if (loggedInUserId) {
-    console.log(user);
-    console.log(user.email);
-
-    // Accessing user data from Realtime Database
-    
-    fetchUserDetails(user.email);
+  if (user) {
+    localStorage.setItem("loggedInUserId", user.uid); // Store userId
+    console.log("User ID:", user.uid);
+    fetchUserDetails(user.uid); // Fetch user details using UID
   } else {
-    console.log("User Id not found in Local Storage");
+    console.log("User is not logged in");
+    window.location.href = "login.html"; // Redirect to login if not logged in
   }
 });
 
@@ -107,27 +107,23 @@ function scrollFunction() {
 }
 //---ignore ends
 
-function fetchUserDetails(email) {
-  const dbRef = ref(db, 'users'); // Pointing to the 'users' collection
+function fetchUserDetails(userId) {
+  const userRef = ref(db, "users/" + userId); // Directly fetch user by userId
 
-  // Query the database to find users where 'email' equals the provided email
-  const userQuery = query(dbRef, orderByChild('email'), equalTo(email));
+  get(userRef)
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+        console.log("User Found:", userData);
 
-  get(userQuery).then((snapshot) => {
-    if (snapshot.exists()) {
-      snapshot.forEach((userSnapshot) => {
-        const userData = userSnapshot.val();
-        console.log('User Found:', userData);
-
-        // Update the points in the HTML
-        const userPoints = userData.points || 0; // Fallback to 0 if points field doesn't exist
-        document.getElementById('user-points').textContent = userPoints;
-      });
-    } else {
-      console.log('No user found with the given email.');
-    }
-  }).catch((error) => {
-    console.error('Error fetching data:', error);
-  });
+        // Update the points in the UI
+        const userPoints = userData.points || 0; // Default to 0 if not present
+        document.getElementById("user-points").textContent = userPoints;
+      } else {
+        console.log("No user found with the given ID.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
 }
-
