@@ -9,6 +9,9 @@ import {
   push,
   set,
   get,
+  query,
+  orderByChild,
+  equalTo,
   update,
 } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 import {
@@ -35,15 +38,18 @@ const auth = getAuth(app);
 const database = getDatabase(app);
 const storage = getStorage(app);
 
-let userId = null; // Store logged-in user's UID
+let userEmail = null; // Store logged-in user's email
 let uploadedImageURL = "";
 let currentLatitude = null;
 let currentLongitude = null;
 
+// Helper function to sanitize email (replace '.' with '_')
+const sanitizeEmail = (email) => email.replace(/\./g, "_");
+
 // Check if user is logged in
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    userId = user.uid; // Get UID of logged-in user
+    userEmail = user.email; // Get logged-in user's email
     fetchUserPoints(); // Fetch user's points
   } else {
     alert("Please log in to submit data.");
@@ -85,11 +91,12 @@ async function uploadImage() {
 // Attach event listener to upload button
 document.getElementById("uploadImage").addEventListener("click", uploadImage);
 
-// Function to update user points
+// Function to update user points using email
 async function updateUserPoints() {
-  if (!userId) return; // Ensure user is logged in
+  if (!userEmail) return; // Ensure user is logged in
 
-  const userPointsRef = dbRef(database, `users/${userId}/points`);
+  const sanitizedEmail = sanitizeEmail(userEmail);
+  const userPointsRef = dbRef(database, `users/${sanitizedEmail}/points`);
 
   try {
     const snapshot = await get(userPointsRef);
@@ -112,7 +119,7 @@ document
   .addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    if (!userId) {
+    if (!userEmail) {
       alert("You must be logged in to submit.");
       return;
     }
@@ -140,7 +147,7 @@ document
 
     try {
       await set(newLitterRef, {
-        userId,
+        userEmail, // Store email instead of UID
         pincode: pincodeValue,
         description: descriptionValue,
         imageURL: uploadedImageURL,
@@ -163,11 +170,12 @@ document
     }
   });
 
-// Function to fetch user points
+// Function to fetch user points using email
 async function fetchUserPoints() {
-  if (!userId) return;
+  if (!userEmail) return;
 
-  const userPointsRef = dbRef(database, `users/${userId}/points`);
+  const sanitizedEmail = sanitizeEmail(userEmail);
+  const userPointsRef = dbRef(database, `users/${sanitizedEmail}/points`);
 
   try {
     const snapshot = await get(userPointsRef);

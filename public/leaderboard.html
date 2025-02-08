@@ -35,17 +35,20 @@
           .then((snapshot) => {
             if (snapshot.exists()) {
               const users = snapshot.val();
-              const leaderboard = [];
+              console.log("Fetched Users:", users); // Debugging: Log fetched users
 
+              const leaderboard = [];
               Object.keys(users).forEach((userId) => {
                 leaderboard.push({
-                  email: users[userId].email || "Unknown",
+                  email: users[userId].email ? users[userId].email : "Unknown", // Fix missing email
                   points: users[userId].points || 0,
                 });
               });
 
-              leaderboard.sort((a, b) => b.points - a.points); // Sort by points descending
+              leaderboard.sort((a, b) => b.points - a.points);
               displayLeaderboard(leaderboard);
+            } else {
+              console.log("No users found in the database.");
             }
           })
           .catch((error) => {
