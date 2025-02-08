@@ -1,2 +1,0 @@
-[build]
-default = ["public/login.html"]

@@ -362,44 +362,55 @@
             selectedmarker.placeInfo.description =
               CommonUtil.getInputValue("description");
 
-            // Handle image upload
+            function saveToLocalStorage() {
+              var locations = markers.map(function (marker) {
+                return {
+                  lat: marker.getPosition().lat(),
+                  lng: marker.getPosition().lng(),
+                  info: marker.placeInfo,
+                };
+              });
+              localStorage.setItem("locations", JSON.stringify(locations));
+            }
+
             var fileInput = document.getElementById("photo");
             var file = fileInput.files[0];
             if (file) {
               var reader = new FileReader();
               reader.onload = function (e) {
-                selectedmarker.placeInfo.photo = e.target.result; // Store Base64 image
+                selectedmarker.placeInfo.photo = e.target.result;
                 GoogleMap.showPlaceDetailsToUser(selectedmarker);
-
-                // Save locations to localStorage
-                var locations = markers.map(function (marker) {
-                  return {
-                    lat: marker.getPosition().lat(),
-                    lng: marker.getPosition().lng(),
-                    info: marker.placeInfo,
-                  };
-                });
-                localStorage.setItem("locations", JSON.stringify(locations));
+                saveToLocalStorage();
               };
               reader.readAsDataURL(file);
             } else {
               GoogleMap.showPlaceDetailsToUser(selectedmarker);
+              saveToLocalStorage();
             }
           },
 
           removeLocation: function () {
-            markers.splice(markers.indexOf(selectedmarker), 1);
-            if (selectedmarker) {
-              selectedmarker.setMap(null);
-            }
-            var locations = markers.map(function (marker) {
-              return {
-                lat: marker.getPosition().lat(),
-                lng: marker.getPosition().lng(),
-                info: marker.placeInfo,
-              };
-            });
+            if (!selectedMarker) return;
+
+            // Close the info window
+            if (infoWindow) infoWindow.close();
+
+            // Remove marker from map
+            selectedMarker.setMap(null);
+
+            // Filter out the removed marker
+            markers = markers.filter((marker) => marker !== selectedMarker);
+
+            // Save updated locations to localStorage
+            var locations = markers.map((marker) => ({
+              lat: marker.getPosition().lat(),
+              lng: marker.getPosition().lng(),
+              info: marker.info, // Ensure correct reference
+            }));
+
             localStorage.setItem("locations", JSON.stringify(locations));
+
+            selectedMarker = null;
           },
 
           editLocation: function () {
