@@ -4,9 +4,6 @@
 ## Overview
 TrashMap is a smart solution designed to optimize waste disposal by identifying and clearing blackspots and dustbins. Our platform allows users to locate and report nearby dustbins or illegal littering spots (blackspots) through a website. We aim to enhance public awareness and participation in waste management while promoting a cleaner and greener environment.
 
-## Demo
-
-https://trash-talk.netlify.app/login.html
 
 ## Key Features
 - **Real-Time Geolocation**: 
