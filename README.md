@@ -77,19 +77,23 @@ Make sure you have the following installed on your machine:
 1. Clone the repository to your local machine using the following command:
 
    ```bash
+   git clone https://github.com/AbhinavPamadi/TrashMap.git
+   ```
+   if not then:
+   ``` bash
    git clone https://github.com/hmns19/trashmap.git
-
-2. Navigate to the project directory:
+   
+3. Navigate to the project directory:
 
    ```bash
-   cd trashmap
+   cd TrashMap
 
-3. Install the required dependencies:
+4. Install the required dependencies:
    ```bash
    npm i
 
 
-4. Start the frontend application:
+5. Start the frontend application:
    Click on 'Go Live"
 
 ## License
