@@ -14,9 +14,22 @@ TrashMap is a smart solution designed to optimize waste disposal by identifying 
   - Users can report "black sites" or locations where garbage accumulation is common, such as illegal dumping areas or overflowing bins.
   - Alerts local authorities or waste management teams, enabling swift action to clean these areas and prevent further waste build-up.
 
-- **Garbage Pickup Scheduling**: 
-  - Allows users to schedule garbage pickups from their homes or businesses, reducing the likelihood of missed collections.
-  - Optimizes waste collection routes based on user inputs, enhancing efficiency and lowering fuel consumption for garbage trucks.
+- **Finding Nearest Bins**: 
+  - Reduces littering by making disposal points easily accessible.
+  - Works in markets, residential areas, parks, and more.
+  - Ensures waste is disposed of properly, keeping surroundings clean.
+
+- **Reward System**: 
+  - Rewards users with points for reporting black sites or disposing of waste properly.
+  - Points can be redeemed for benefits like AICTE points or other incentives.
+  - Gamification encourages continuous engagement and responsible waste disposal.
+  - Promotes a culture of sustainability by making waste management more rewarding.
+
+- **Blogs & Community Engagement**:
+  - Provides a platform to raise awareness about waste management issues.
+  - Encourages community-driven initiatives like clean-up drives and discussions.
+  - Educates users on waste segregation, recycling, and sustainability.
+  - Helps connect like-minded individuals to drive positive environmental change.
 
 ## Benefits of the System
 - **Enhanced Community Cleanliness**: 
@@ -32,7 +45,7 @@ TrashMap is a smart solution designed to optimize waste disposal by identifying 
 ## Technologies Used
 
 - **Backend**: 
-  - Node.js
+  - Firebase
 
 - **Database**: 
   - Firestore (NoSQL Database)
@@ -73,13 +86,11 @@ Make sure you have the following installed on your machine:
 
 3. Install the required dependencies:
    ```bash
-   npm install
+   npm i
 
 
 4. Start the frontend application:
-
-   ```bash
-   npm start
+   Click on 'Go Live"
 
 ## License
 
